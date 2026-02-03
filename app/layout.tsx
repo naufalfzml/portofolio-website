@@ -2,13 +2,35 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { Sidebar } from "@/components/sidebar"
-import PageTransition from "@/components/PageTransition"
-const inter = Inter({ subsets: ["latin"] })
+import SmoothScroll from "@/components/SmoothScroll"
+import Navigation from "@/components/Navigation"
+import ScrollProgress from "@/components/animations/ScrollProgress"
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+})
 
 export const metadata: Metadata = {
-  title: "Fawwaz Naufal - Portfolio",
-  description: "Portfolio website of Naufal, a passionate web developer"
+  title: "Fawwaz Naufal - Web Developer Portfolio",
+  description:
+    "Portfolio website of Fawwaz Naufal, a passionate web developer specializing in modern web technologies",
+  keywords: [
+    "web developer",
+    "portfolio",
+    "react",
+    "next.js",
+    "typescript",
+    "frontend",
+    "backend",
+  ],
+  authors: [{ name: "Fawwaz Naufal" }],
+  openGraph: {
+    title: "Fawwaz Naufal - Web Developer Portfolio",
+    description:
+      "Portfolio website of Fawwaz Naufal, a passionate web developer specializing in modern web technologies",
+    type: "website",
+  },
 }
 
 export default function RootLayout({
@@ -17,18 +39,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} bg-gray-900 text-white`}>
-        <div className="flex min-h-screen relative">
-          <div className="relative z-10">
-            <Sidebar />
-          </div>
-          <main className="flex-1 ml-16 relative z-10 overflow-hidden">
-              <PageTransition>
-                {children}
-              </PageTransition>
-          </main>
-        </div>
+    <html lang="en" className="dark">
+      <body className={`${inter.variable} font-sans bg-black text-white`}>
+        <SmoothScroll>
+          <ScrollProgress />
+          <Navigation />
+          <main>{children}</main>
+        </SmoothScroll>
       </body>
     </html>
   )
