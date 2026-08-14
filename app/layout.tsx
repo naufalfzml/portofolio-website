@@ -1,20 +1,26 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { Inter } from "next/font/google"
+import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import SmoothScroll from "@/components/SmoothScroll"
 import Navigation from "@/components/Navigation"
-import ScrollProgress from "@/components/animations/ScrollProgress"
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-inter",
+  variable: "--font-sans",
+  display: "swap",
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
+  display: "swap",
 })
 
 export const metadata: Metadata = {
-  title: "Fawwaz Naufal - Full-stack Developer Portfolio",
+  title: "Fawwaz Naufal — Full-stack Developer",
   description:
-    "Portfolio of Fawwaz Naufal, a full-stack developer building ERP systems, web platforms, and Web3 applications with Go, Laravel, Next.js, and Solidity.",
+    "Full-stack developer building ERP systems, internal tools, and smart contracts with Go, Laravel, Next.js, and Solidity. Four hackathon wins, USD 11.7K in prizes.",
   keywords: [
     "full-stack developer",
     "portfolio",
@@ -26,11 +32,11 @@ export const metadata: Metadata = {
     "web3",
     "erp",
   ],
-  authors: [{ name: "Fawwaz Naufal" }],
+  authors: [{ name: "Fawwaz Naufal Maulana" }],
   openGraph: {
-    title: "Fawwaz Naufal - Full-stack Developer Portfolio",
+    title: "Fawwaz Naufal — Full-stack Developer",
     description:
-      "Portfolio of Fawwaz Naufal, a full-stack developer building ERP systems, web platforms, and Web3 applications with Go, Laravel, Next.js, and Solidity.",
+      "Full-stack developer building ERP systems, internal tools, and smart contracts. Four hackathon wins, USD 11.7K in prizes.",
     type: "website",
   },
 }
@@ -42,11 +48,16 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.variable} font-sans bg-black text-white`}>
+      <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-ink text-paper`}>
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-phosphor focus:px-4 focus:py-2 focus:font-mono focus:text-sm focus:text-ink"
+        >
+          Skip to content
+        </a>
         <SmoothScroll>
-          <ScrollProgress />
           <Navigation />
-          <main>{children}</main>
+          <main id="main">{children}</main>
         </SmoothScroll>
       </body>
     </html>

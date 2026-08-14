@@ -1,20 +1,15 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect } from "react"
 import Lenis from "lenis"
 import gsap from "gsap"
-import { ScrollTrigger } from "gsap/ScrollTrigger"
 
-gsap.registerPlugin(ScrollTrigger)
-
-interface SmoothScrollProps {
-  children: React.ReactNode
-}
-
-export default function SmoothScroll({ children }: SmoothScrollProps) {
-  const lenisRef = useRef<Lenis | null>(null)
-
+export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   useEffect(() => {
+    // Users who ask for less motion should get the browser's own scrolling.
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    if (prefersReducedMotion) return
+
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -24,52 +19,18 @@ export default function SmoothScroll({ children }: SmoothScrollProps) {
       touchMultiplier: 2,
     })
 
-    lenisRef.current = lenis
+    // Keep a reference to the exact function passed to the ticker, otherwise
+    // cleanup removes nothing and the callback leaks across remounts.
+    const update = (time: number) => lenis.raf(time * 1000)
 
-    lenis.on("scroll", ScrollTrigger.update)
-
-    gsap.ticker.add((time) => {
-      lenis.raf(time * 1000)
-    })
-
+    gsap.ticker.add(update)
     gsap.ticker.lagSmoothing(0)
 
     return () => {
+      gsap.ticker.remove(update)
       lenis.destroy()
-      gsap.ticker.remove((time) => {
-        lenis.raf(time * 1000)
-      })
     }
   }, [])
 
   return <>{children}</>
-}
-
-export function useLenis() {
-  const lenisRef = useRef<Lenis | null>(null)
-
-  useEffect(() => {
-    const checkLenis = () => {
-      const lenisInstance = (window as unknown as { lenis?: Lenis }).lenis
-      if (lenisInstance) {
-        lenisRef.current = lenisInstance
-      }
-    }
-    checkLenis()
-  }, [])
-
-  const scrollTo = (target: string | number, options?: { offset?: number }) => {
-    if (lenisRef.current) {
-      lenisRef.current.scrollTo(target, options)
-    } else {
-      const element = typeof target === "string" ? document.querySelector(target) : null
-      if (element) {
-        element.scrollIntoView({ behavior: "smooth" })
-      } else if (typeof target === "number") {
-        window.scrollTo({ top: target, behavior: "smooth" })
-      }
-    }
-  }
-
-  return { scrollTo }
 }

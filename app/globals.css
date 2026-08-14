@@ -2,63 +2,73 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+  Palette: amber-phosphor CRT.
+  Warm ink rather than pure black, warm paper rather than pure white, and a
+  single accent borrowed from amber phosphor terminals. One accent only —
+  everything else earns attention through type and spacing.
+  Values are RGB channels so Tailwind opacity modifiers keep working.
+*/
 :root {
-  --background: 0 0% 0%;
-  --foreground: 0 0% 100%;
-  --card: 0 0% 5%;
-  --card-foreground: 0 0% 100%;
-  --popover: 0 0% 5%;
-  --popover-foreground: 0 0% 100%;
-  --primary: 0 0% 100%;
-  --primary-foreground: 0 0% 0%;
-  --secondary: 0 0% 10%;
-  --secondary-foreground: 0 0% 100%;
-  --muted: 0 0% 15%;
-  --muted-foreground: 0 0% 60%;
-  --accent: 270 70% 60%;
-  --accent-foreground: 0 0% 100%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 100%;
-  --border: 0 0% 15%;
-  --input: 0 0% 15%;
-  --ring: 270 70% 60%;
-  --radius: 0.75rem;
+  --ink: 12 11 10;
+  --ink-raised: 19 17 16;
+  --ink-sunken: 8 7 6;
+
+  --rule: 36 33 30;
+  --rule-strong: 58 52 47;
+
+  --paper: 237 232 224;
+  --paper-dim: 154 146 138;
+  --paper-faint: 99 92 85;
+
+  --phosphor: 255 180 84;
+  --phosphor-dim: 138 106 56;
+
+  /* shadcn/ui compatibility, retuned to the palette above */
+  --background: 20 8% 4%;
+  --foreground: 34 22% 90%;
+  --card: 20 8% 7%;
+  --card-foreground: 34 22% 90%;
+  --popover: 20 8% 7%;
+  --popover-foreground: 34 22% 90%;
+  --primary: 34 22% 90%;
+  --primary-foreground: 20 8% 4%;
+  --secondary: 24 9% 13%;
+  --secondary-foreground: 34 22% 90%;
+  --muted: 24 9% 13%;
+  --muted-foreground: 30 8% 57%;
+  --accent: 33 100% 66%;
+  --accent-foreground: 20 8% 4%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 34 22% 90%;
+  --border: 24 9% 13%;
+  --input: 24 9% 13%;
+  --ring: 33 100% 66%;
+  --radius: 0px;
 }
 
 @layer base {
   * {
-    @apply border-border;
-  }
-
-  html {
-    scroll-behavior: smooth;
+    @apply border-rule;
   }
 
   body {
-    @apply bg-black text-white antialiased;
-    font-feature-settings: "rlig" 1, "calt" 1;
+    @apply bg-ink text-paper antialiased;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+  }
+
+  /* Numerals line up in every table and log line on the page. */
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
   }
 
   ::selection {
-    @apply bg-purple-500/30 text-white;
-  }
-}
-
-@layer components {
-  .gradient-text {
-    @apply bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent;
+    @apply bg-phosphor/25 text-paper;
   }
 
-  .gradient-border {
-    @apply bg-gradient-to-br from-purple-600 to-pink-600;
-  }
-
-  .glass {
-    @apply bg-white/5 backdrop-blur-md border border-white/10;
-  }
-
-  .glass-hover {
-    @apply hover:bg-white/10 hover:border-white/20 transition-all duration-300;
+  :focus-visible {
+    @apply outline-none ring-2 ring-phosphor ring-offset-2 ring-offset-ink;
   }
 }
 
@@ -67,90 +77,37 @@
     text-wrap: balance;
   }
 
-  .animation-delay-200 {
-    animation-delay: 200ms;
-  }
-
-  .animation-delay-400 {
-    animation-delay: 400ms;
-  }
-
-  .animation-delay-600 {
-    animation-delay: 600ms;
-  }
 }
 
-/* Custom scrollbar for webkit browsers */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+  height: 10px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgb(var(--ink-sunken));
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
+  background: rgb(var(--rule-strong));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgb(var(--paper-faint));
 }
 
-/* Line clamp utility */
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-/* Smooth scroll for anchor links */
 html {
-  scroll-padding-top: 100px;
+  /* Lenis owns scrolling; native smooth scroll fights it. */
+  scroll-padding-top: 96px;
 }
 
-/* Animation keyframes */
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
-  50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 0.8;
-  }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-fade-in-up {
-  animation: fade-in-up 0.6s ease-out forwards;
 }

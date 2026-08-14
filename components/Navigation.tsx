@@ -1,179 +1,140 @@
 "use client"
 
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useEffect, useState } from "react"
+import { AnimatePresence, motion } from "framer-motion"
 import { Menu, X } from "lucide-react"
-
-const navItems = [
-  { name: "Home", href: "#hero" },
-  { name: "About", href: "#about" },
-  { name: "Experience", href: "#experience" },
-  { name: "Skills", href: "#skills" },
-  { name: "Projects", href: "#projects" },
-  { name: "Awards", href: "#awards" },
-  { name: "Contact", href: "#contact" },
-]
+import { sections } from "@/lib/content"
 
 export default function Navigation() {
-  const [activeSection, setActiveSection] = useState("hero")
+  const [activeSection, setActiveSection] = useState<string>("")
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
-
-      const sections = navItems.map((item) => item.href.replace("#", ""))
-      const scrollPosition = window.scrollY + 100
-
-      for (const section of sections) {
-        const element = document.getElementById(section)
-        if (element) {
-          const { offsetTop, offsetHeight } = element
-          if (scrollPosition >= offsetTop && scrollPosition < offsetTop + offsetHeight) {
-            setActiveSection(section)
-            break
-          }
-        }
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
+    const onScroll = () => setIsScrolled(window.scrollY > 24)
+    onScroll()
+    window.addEventListener("scroll", onScroll, { passive: true })
+    return () => window.removeEventListener("scroll", onScroll)
   }, [])
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href)
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" })
-    }
-    setIsMobileMenuOpen(false)
+  // IntersectionObserver keeps the active item honest without fighting Lenis.
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+        if (visible) setActiveSection(visible.target.id)
+      },
+      { rootMargin: "-45% 0px -45% 0px", threshold: [0, 0.25, 0.5, 1] }
+    )
+
+    sections.forEach(({ id }) => {
+      const element = document.getElementById(id)
+      if (element) observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [])
+
+  const goTo = (id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
+    setIsMenuOpen(false)
   }
 
   return (
     <>
-      <motion.nav
-        initial={{ y: -100, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled ? "bg-black/90 backdrop-blur-sm border-b border-neutral-800" : "bg-transparent"
+      <header
+        className={`fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+          isScrolled ? "border-b border-rule bg-ink/85 backdrop-blur-md" : "border-b border-transparent"
         }`}
       >
-        <div className="max-w-7xl mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <motion.a
-              href="#hero"
-              onClick={(e) => {
-                e.preventDefault()
-                scrollToSection("#hero")
-              }}
-              className="text-xl font-bold text-white hover:text-neutral-300 transition-colors"
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-            >
-              Naufal<span className="text-neutral-500">.</span>
-            </motion.a>
+        <nav className="mx-auto flex max-w-shell items-center justify-between px-6 py-4 lg:px-10">
+          <a
+            href="#hero"
+            onClick={(event) => {
+              event.preventDefault()
+              window.scrollTo({ top: 0, behavior: "smooth" })
+              setIsMenuOpen(false)
+            }}
+            className="font-mono text-sm text-paper transition-colors hover:text-phosphor"
+          >
+            naufal
+            <span className="ml-2 text-paper-faint">~/portfolio</span>
+          </a>
 
-            <div className="hidden md:flex items-center gap-5 lg:gap-8">
-              {navItems.map((item) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    scrollToSection(item.href)
+          <ul className="hidden items-center gap-6 lg:flex">
+            {sections.map(({ id, label }) => (
+              <li key={id}>
+                <a
+                  href={`#${id}`}
+                  onClick={(event) => {
+                    event.preventDefault()
+                    goTo(id)
                   }}
-                  className={`relative text-sm font-medium transition-colors ${
-                    activeSection === item.href.replace("#", "")
-                      ? "text-white"
-                      : "text-neutral-500 hover:text-white"
+                  className={`font-mono text-[13px] transition-colors ${
+                    activeSection === id ? "text-phosphor" : "text-paper-dim hover:text-paper"
                   }`}
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.95 }}
                 >
-                  {item.name}
-                  {activeSection === item.href.replace("#", "") && (
-                    <motion.div
-                      layoutId="activeSection"
-                      className="absolute -bottom-1 left-0 right-0 h-px bg-white"
-                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
-                    />
-                  )}
-                </motion.a>
-              ))}
-            </div>
+                  <span
+                    className={`mr-1.5 transition-opacity ${
+                      activeSection === id ? "opacity-100" : "opacity-0"
+                    }`}
+                    aria-hidden="true"
+                  >
+                    ▸
+                  </span>
+                  {label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-            <div className="hidden lg:block">
-              <motion.a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault()
-                  scrollToSection("#contact")
-                }}
-                className="px-5 py-2.5 bg-white text-black text-sm font-medium hover:bg-neutral-200 transition-colors"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Get in Touch
-              </motion.a>
-            </div>
-
-            <button
-              className="md:hidden text-white p-2"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
-      </motion.nav>
+          <button
+            type="button"
+            className="text-paper lg:hidden"
+            onClick={() => setIsMenuOpen((open) => !open)}
+            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+            aria-expanded={isMenuOpen}
+          >
+            {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </nav>
+      </header>
 
       <AnimatePresence>
-        {isMobileMenuOpen && (
+        {isMenuOpen && (
           <motion.div
-            initial={{ opacity: 0, y: -20 }}
+            initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
+            exit={{ opacity: 0, y: -8 }}
             transition={{ duration: 0.2 }}
-            className="fixed top-[72px] left-0 right-0 z-40 bg-black/95 backdrop-blur-sm border-b border-neutral-800 md:hidden"
+            className="fixed inset-x-0 top-[57px] z-40 border-b border-rule bg-ink/95 backdrop-blur-md lg:hidden"
           >
-            <div className="px-6 py-4 space-y-4">
-              {navItems.map((item, index) => (
-                <motion.a
-                  key={item.name}
-                  href={item.href}
-                  onClick={(e) => {
-                    e.preventDefault()
-                    scrollToSection(item.href)
-                  }}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.1 }}
-                  className={`block text-lg font-medium transition-colors ${
-                    activeSection === item.href.replace("#", "")
-                      ? "text-white"
-                      : "text-neutral-500"
-                  }`}
-                >
-                  {item.name}
-                </motion.a>
+            <ul className="px-6 py-4">
+              {sections.map(({ id, label, command }) => (
+                <li key={id}>
+                  <a
+                    href={`#${id}`}
+                    onClick={(event) => {
+                      event.preventDefault()
+                      goTo(id)
+                    }}
+                    className="flex items-baseline justify-between gap-4 border-b border-rule py-3.5 last:border-b-0"
+                  >
+                    <span
+                      className={`font-mono text-base ${
+                        activeSection === id ? "text-phosphor" : "text-paper"
+                      }`}
+                    >
+                      {label}
+                    </span>
+                    <span className="font-mono text-[10px] text-paper-faint">{command}</span>
+                  </a>
+                </li>
               ))}
-              <motion.a
-                href="#contact"
-                onClick={(e) => {
-                  e.preventDefault()
-                  scrollToSection("#contact")
-                }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: navItems.length * 0.1 }}
-                className="block w-full text-center px-5 py-3 bg-white text-black font-medium"
-              >
-                Get in Touch
-              </motion.a>
-            </div>
+            </ul>
           </motion.div>
         )}
       </AnimatePresence>
