@@ -7,8 +7,10 @@ import { Menu, X } from "lucide-react"
 const navItems = [
   { name: "Home", href: "#hero" },
   { name: "About", href: "#about" },
+  { name: "Experience", href: "#experience" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
+  { name: "Awards", href: "#awards" },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -73,7 +75,7 @@ export default function Navigation() {
               Naufal<span className="text-neutral-500">.</span>
             </motion.a>
 
-            <div className="hidden md:flex items-center gap-8">
+            <div className="hidden md:flex items-center gap-5 lg:gap-8">
               {navItems.map((item) => (
                 <motion.a
                   key={item.name}
@@ -102,7 +104,7 @@ export default function Navigation() {
               ))}
             </div>
 
-            <div className="hidden md:block">
+            <div className="hidden lg:block">
               <motion.a
                 href="#contact"
                 onClick={(e) => {

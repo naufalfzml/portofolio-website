@@ -36,15 +36,15 @@ export default function HeroSection() {
               </h1>
               <h1 className="text-5xl lg:text-7xl font-bold leading-tight text-white">
                 <TextReveal delay={0.8} stagger={0.04}>
-                  Web Developer
+                  Full-stack Developer
                 </TextReveal>
               </h1>
             </div>
 
             <FadeInView delay={1.2}>
               <p className="text-neutral-400 text-lg max-w-md leading-relaxed">
-                I build visually captivating, user-friendly websites & applications that deliver
-                exceptional user experiences.
+                I build ERP systems, web platforms, and Web3 applications — from internal tools that
+                run a business to smart contracts that move real value.
               </p>
             </FadeInView>
 

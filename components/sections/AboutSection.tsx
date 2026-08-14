@@ -1,29 +1,27 @@
 "use client"
 
 import { useEffect, useRef, useState } from "react"
-import { motion, useInView } from "framer-motion"
-import { Briefcase } from "lucide-react"
+import { useInView } from "framer-motion"
+import { GraduationCap } from "lucide-react"
 import TextReveal from "@/components/animations/TextReveal"
 import FadeInView from "@/components/animations/FadeInView"
 import { StaggerContainer, StaggerItem } from "@/components/animations/FadeInView"
 
-const experiences = [
-  {
-    title: "Web Developer",
-    company: "Enzo Group CV",
-    period: "Oct 2024 - Present",
-  },
-  {
-    title: "Lecturer's Assistant",
-    company: "Programming Concept, Data Structure & Algorithm, Computer System Organization",
-    period: "Sept 2024 - July 2025",
-  },
-  {
-    title: "WordPress Developer",
-    company: "LSP & LIK UNISRI",
-    period: "Sept 2024 - Oct 2024",
-  },
-]
+const education = {
+  institution: "Universitas Sebelas Maret",
+  degree: "Bachelor of Computer Science, Informatics",
+  period: "Aug 2023 - Present",
+  location: "Surakarta, Central Java",
+  coursework: [
+    "Database",
+    "Data Structure & Algorithm",
+    "Algorithm Design & Analysis",
+    "Application & Web Programming",
+    "Software Engineering",
+    "Computer Networks",
+    "Operating System",
+  ],
+}
 
 interface CounterProps {
   end: number
@@ -88,10 +86,10 @@ export default function AboutSection() {
               <div className="relative border border-neutral-800 p-8">
                 <h3 className="text-2xl font-bold text-white mb-6">Who am I?</h3>
                 <p className="text-neutral-400 leading-relaxed">
-                  A sixth-semester Informatics student at Sebelas Maret University with experience
-                  in backend web development and software development. Familiar with C, C++, Java, PHP, 
-                  and currently learning Go. Passionate about building real-world applications, contributing 
-                  to research projects, and always ready to learn new technologies and skills.
+                  An Informatics student at Universitas Sebelas Maret and a full-stack developer
+                  with experience building ERP systems, web platforms, and Web3 applications. I work
+                  day to day with Go, Laravel, Next.js, and Solidity, shipping scalable digital
+                  products across both business and decentralized environments.
                 </p>
               </div>
             </div>
@@ -100,9 +98,10 @@ export default function AboutSection() {
           <div className="space-y-8">
             <FadeInView direction="right" delay={0.3}>
               <p className="text-neutral-400 text-lg leading-relaxed">
-                I&apos;m passionate about creating solutions that solve real problems and help
-                businesses grow. Whether it&apos;s a simple landing page or a complex web
-                application, I approach each project with dedication and attention to detail.
+                I care about software that holds up in production, whether that&apos;s an internal
+                ERP replacing a maze of spreadsheets, a hospital information system serving real
+                patients, or a smart contract moving real value. That work has been recognized
+                through international hackathons and university-backed digital business funding.
               </p>
             </FadeInView>
 
@@ -110,15 +109,15 @@ export default function AboutSection() {
               <div className="grid grid-cols-2 gap-8">
                 <div className="text-center p-6 border border-neutral-800">
                   <div className="text-4xl font-bold text-white mb-2">
-                    <Counter end={10} suffix="+" />
+                    <Counter end={16} suffix="+" />
                   </div>
                   <div className="text-neutral-500 text-sm">Projects Completed</div>
                 </div>
                 <div className="text-center p-6 border border-neutral-800">
                   <div className="text-4xl font-bold text-white mb-2">
-                    <Counter end={1} suffix="+" />
+                    <Counter end={2} />
                   </div>
-                  <div className="text-neutral-500 text-sm">Years Experience</div>
+                  <div className="text-neutral-500 text-sm">Years of Experience</div>
                 </div>
               </div>
             </FadeInView>
@@ -128,36 +127,45 @@ export default function AboutSection() {
         <div>
           <div className="text-center mb-12">
             <TextReveal as="h3" className="text-3xl lg:text-4xl font-bold text-white mb-4">
-              Experience
+              Education
             </TextReveal>
             <FadeInView delay={0.2}>
               <div className="w-16 h-px bg-neutral-700 mx-auto" />
             </FadeInView>
           </div>
 
-          <StaggerContainer className="space-y-6" staggerDelay={0.15}>
-            {experiences.map((exp, index) => (
-              <StaggerItem key={index}>
-                <motion.div
-                  className="group border border-neutral-800 p-6 lg:p-8 hover:border-neutral-600 transition-all duration-300"
-                  whileHover={{ x: 4 }}
-                >
-                  <div className="flex items-start gap-6">
-                    <div className="flex-shrink-0 w-14 h-14 bg-white text-black flex items-center justify-center group-hover:bg-neutral-200 transition-colors duration-300">
-                      <Briefcase className="w-7 h-7" />
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="text-xl font-bold text-white mb-1 group-hover:text-neutral-300 transition-colors">
-                        {exp.title}
-                      </h4>
-                      <p className="text-neutral-400 mb-2">{exp.company}</p>
-                      <p className="text-neutral-600 text-sm">{exp.period}</p>
-                    </div>
+          <FadeInView delay={0.3}>
+            <div className="group border border-neutral-800 p-6 lg:p-8 hover:border-neutral-600 transition-all duration-300">
+              <div className="flex flex-col sm:flex-row items-start gap-6">
+                <div className="flex-shrink-0 w-14 h-14 bg-white text-black flex items-center justify-center group-hover:bg-neutral-200 transition-colors duration-300">
+                  <GraduationCap className="w-7 h-7" />
+                </div>
+
+                <div className="flex-1">
+                  <div className="flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-1 mb-2">
+                    <h4 className="text-xl font-bold text-white group-hover:text-neutral-300 transition-colors">
+                      {education.institution}
+                    </h4>
+                    <p className="text-neutral-600 text-sm">{education.period}</p>
                   </div>
-                </motion.div>
-              </StaggerItem>
-            ))}
-          </StaggerContainer>
+
+                  <p className="text-neutral-400">{education.degree}</p>
+                  <p className="text-neutral-600 text-sm mb-6">{education.location}</p>
+
+                  <p className="text-neutral-500 text-sm mb-3">Relevant coursework</p>
+                  <StaggerContainer className="flex flex-wrap gap-1.5" staggerDelay={0.05}>
+                    {education.coursework.map((course, index) => (
+                      <StaggerItem key={index}>
+                        <span className="inline-block px-2 py-1 border border-neutral-800 text-neutral-500 text-xs font-medium">
+                          {course}
+                        </span>
+                      </StaggerItem>
+                    ))}
+                  </StaggerContainer>
+                </div>
+              </div>
+            </div>
+          </FadeInView>
         </div>
       </div>
     </section>

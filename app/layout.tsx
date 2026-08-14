@@ -12,23 +12,25 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: "Fawwaz Naufal - Web Developer Portfolio",
+  title: "Fawwaz Naufal - Full-stack Developer Portfolio",
   description:
-    "Portfolio website of Fawwaz Naufal, a passionate web developer specializing in modern web technologies",
+    "Portfolio of Fawwaz Naufal, a full-stack developer building ERP systems, web platforms, and Web3 applications with Go, Laravel, Next.js, and Solidity.",
   keywords: [
-    "web developer",
+    "full-stack developer",
     "portfolio",
-    "react",
+    "go",
+    "laravel",
     "next.js",
     "typescript",
-    "frontend",
-    "backend",
+    "solidity",
+    "web3",
+    "erp",
   ],
   authors: [{ name: "Fawwaz Naufal" }],
   openGraph: {
-    title: "Fawwaz Naufal - Web Developer Portfolio",
+    title: "Fawwaz Naufal - Full-stack Developer Portfolio",
     description:
-      "Portfolio website of Fawwaz Naufal, a passionate web developer specializing in modern web technologies",
+      "Portfolio of Fawwaz Naufal, a full-stack developer building ERP systems, web platforms, and Web3 applications with Go, Laravel, Next.js, and Solidity.",
     type: "website",
   },
 }

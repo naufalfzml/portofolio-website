@@ -26,6 +26,11 @@ const tagColors: Record<string, string> = {
   "C#": "border-purple-600 text-purple-400",
   "Unity": "border-neutral-400 text-neutral-300",
   "React Native": "border-cyan-500 text-cyan-400",
+  "Go": "border-sky-500 text-sky-400",
+  "Chainlink": "border-blue-500 text-blue-400",
+  "GameFi": "border-fuchsia-600 text-fuchsia-400",
+  "Nest.js": "border-rose-600 text-rose-400",
+  "ERP": "border-orange-600 text-orange-400",
 }
 
 const projects = [
@@ -37,6 +42,15 @@ const projects = [
     github: "github.com/Tethra-Dex",
     website: "tethra.trade",
     tags: ["Next.js", "Foundry", "Web3"],
+  },
+  {
+    title: "Memepull Arena",
+    description:
+      "A trustless Web3 GameFi platform featuring PvP liquidity battles and milestone-based prediction markets for meme coin communities. Won 2nd place in the Prediction Markets Track at the Convergence Chainlink Hackathon.",
+    image: "",
+    github: "",
+    website: "",
+    tags: ["Next.js", "Solidity", "Chainlink", "GameFi"],
   },
   {
     title: "RyvynPay",
@@ -59,11 +73,20 @@ const projects = [
   {
     title: "Enzo Group ERP",
     description:
-      "Laravel-based website for managing customer orders, tracking inventory, and team calendars, replacing spreadsheets with an efficient, centralized system.",
+      "A multi-module ERP system supporting order management and operational workflows, with connected KPI modules for Design, Content, Customer Service, PPIC, and Finance — replacing spreadsheets with one centralized system.",
     image: "/enzo-erp.png",
     github: "github.com/naufalfzml/enzo-group-erp-fix",
     website: "erp.enzocreatives.com",
-    tags: ["Backend", "Laravel"],
+    tags: ["ERP", "Laravel", "Nest.js", "Next.js"],
+  },
+  {
+    title: "Rekandana",
+    description:
+      "A collaboration platform that connects university event committees and academic initiatives with companies for sponsorship, partnerships, and research support. Funded by the Wirausahawan Baru Mahasiswa program at UNS.",
+    image: "",
+    github: "",
+    website: "",
+    tags: ["Fullstack", "Laravel"],
   },
   {
     title: "Verifund",
@@ -150,7 +173,7 @@ const projects = [
     title: "SIGAP App",
     description:
       "A mobile application built with React Native for emergency response and community safety reporting.",
-    image: "/verifund.png",
+    image: "",
     github: "github.com/naufalfzml/sigap-app",
     website: "",
     tags: ["React Native"],
@@ -159,7 +182,7 @@ const projects = [
 
 export default function ProjectsSection() {
   return (
-    <section id="projects" className="py-32 relative overflow-hidden bg-black">
+    <section id="projects" className="py-32 relative overflow-hidden bg-neutral-950">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <TextReveal as="h2" className="text-4xl lg:text-6xl font-bold text-white mb-6">

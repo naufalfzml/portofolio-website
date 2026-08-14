@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Code, Database, Smartphone, Brain } from "lucide-react"
+import { Braces, Code, Server, Database, Smartphone, Brain, Wrench } from "lucide-react"
 import { SiSolidity } from "react-icons/si"
 import TextReveal from "@/components/animations/TextReveal"
 import FadeInView from "@/components/animations/FadeInView"
@@ -9,22 +9,34 @@ import { StaggerContainer, StaggerItem } from "@/components/animations/FadeInVie
 
 const skills = [
   {
+    icon: Braces,
+    title: "Languages",
+    description: "Go, TypeScript, JavaScript, PHP, Java, Solidity, Rust, Python, C",
+    iconColor: "text-neutral-300",
+  },
+  {
     icon: Code,
     title: "Frontend Development",
-    description: "HTML, TailwindCSS, React, Next.js, TypeScript, JavaScript",
+    description: "Next.js, React, TypeScript, Tailwind CSS, HTMX",
     iconColor: "text-sky-400",
   },
   {
-    icon: Database,
+    icon: Server,
     title: "Backend Development",
-    description: "Laravel, Flask, MySQL",
+    description: "Go, Nest.js, Express.js, Laravel, GraphQL",
     iconColor: "text-emerald-400",
+  },
+  {
+    icon: Database,
+    title: "Database & ORM",
+    description: "MySQL, PostgreSQL, Prisma",
+    iconColor: "text-indigo-400",
   },
   {
     icon: SiSolidity,
     title: "Web3 Development",
-    description: "Solidity, Smart Contract",
-    iconColor: "text-neutral-300",
+    description: "Solidity, Foundry, Anchor, Smart Contract",
+    iconColor: "text-violet-400",
   },
   {
     icon: Brain,
@@ -38,11 +50,17 @@ const skills = [
     description: "React Native",
     iconColor: "text-cyan-400",
   },
+  {
+    icon: Wrench,
+    title: "Tools & Platform",
+    description: "Git, GitHub, GitLab, Linux, Vercel",
+    iconColor: "text-rose-400",
+  },
 ]
 
 export default function SkillsSection() {
   return (
-    <section id="skills" className="py-32 relative overflow-hidden bg-neutral-950">
+    <section id="skills" className="py-32 relative overflow-hidden bg-black">
       <div className="max-w-7xl mx-auto px-6 relative z-10">
         <div className="text-center mb-20">
           <TextReveal as="h2" className="text-4xl lg:text-6xl font-bold text-white mb-6">
