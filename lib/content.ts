@@ -161,9 +161,9 @@ export const projects: Project[] = [
     year: "2026",
     description:
       "A trustless Web3 GameFi platform built around PvP liquidity battles and milestone-based prediction markets for meme coin communities. Settlement runs on Chainlink CRE.",
-    image: "",
-    github: "",
-    website: "",
+    image: "/memepull.png",
+    github: "https://github.com/MemePull",
+    website: "https://chain.link/hackathon/winners/memepull-arena",
     stack: ["Next.js", "Solidity", "Foundry", "Go", "Chainlink CRE"],
     featured: true,
     note: "2nd place of 500+ · Convergence Chainlink",
